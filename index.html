@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f0f0f">
+<title>Gym Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="Gym Tracker Logo">
+          <rect x="4" y="12" width="24" height="8" rx="2" stroke="currentColor" stroke-width="2"/>
+          <rect x="8" y="8" width="4" height="16" rx="1" fill="currentColor"/>
+          <rect x="20" y="8" width="4" height="16" rx="1" fill="currentColor"/>
+          <rect x="2" y="10" width="4" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="26" y="10" width="4" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>Gym Tracker</span>
+      </div>
+      <button class="btn-icon" id="settingsBtn" aria-label="Einstellungen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="app-main">
+
+    <!-- Status Card -->
+    <section class="status-card" id="statusCard">
+      <div class="status-indicator" id="statusIndicator">
+        <div class="pulse-ring" id="pulseRing"></div>
+        <div class="status-dot" id="statusDot"></div>
+      </div>
+      <div class="status-text">
+        <h2 id="statusTitle">Standort wird geprüft...</h2>
+        <p id="statusSubtitle">GPS-Signal wird gesucht</p>
+      </div>
+      <button class="btn-check" id="manualCheckIn" style="display:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Manuell einchecken
+      </button>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <span class="stat-value" id="monthCount">0</span>
+        <span class="stat-label">Diesen Monat</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="yearCount">0</span>
+        <span class="stat-label">Dieses Jahr</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="streakCount">0</span>
+        <span class="stat-label">Streak</span>
+      </div>
+    </section>
+
+    <!-- Weekly frequency bar -->
+    <section class="weekly-bar-section">
+      <h3 class="section-title">Wochenfrequenz</h3>
+      <div class="weekly-bar" id="weeklyBar"></div>
+      <p class="weekly-avg" id="weeklyAvg"></p>
+    </section>
+
+    <!-- Calendar -->
+    <section class="calendar-section">
+      <div class="calendar-header">
+        <button class="btn-icon" id="prevMonth" aria-label="Vorheriger Monat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h3 class="calendar-title" id="calendarTitle">März 2026</h3>
+        <button class="btn-icon" id="nextMonth" aria-label="Nächster Monat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="calendar-weekdays">
+        <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </section>
+
+    <!-- Recent Visits -->
+    <section class="recent-section">
+      <h3 class="section-title">Letzte Besuche</h3>
+      <ul class="visit-list" id="visitList"></ul>
+    </section>
+
+  </main>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Einstellungen</h3>
+        <button class="btn-icon" id="closeSettings" aria-label="Schließen">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label class="setting-label">Fitnessstudio-Adresse</label>
+          <input type="text" class="setting-input" id="gymAddress" value="Heinz-Schmöle-Str. 3, 40227 Düsseldorf" readonly>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Erkennungsradius (Meter)</label>
+          <input type="range" class="setting-range" id="radiusRange" min="30" max="200" value="80" step="10">
+          <span class="range-value" id="radiusValue">80m</span>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Auto-Check (Intervall in Minuten)</label>
+          <input type="range" class="setting-range" id="intervalRange" min="1" max="15" value="5" step="1">
+          <span class="range-value" id="intervalValue">5 min</span>
+        </div>
+        <hr class="setting-divider">
+        <div class="setting-group">
+          <label class="setting-label">Daten exportieren</label>
+          <button class="btn-secondary" id="exportBtn">Als CSV exportieren</button>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Vergangene Besuche hinzufügen</label>
+          <input type="date" class="setting-input" id="addVisitDate">
+          <button class="btn-secondary" id="addVisitBtn">Besuch hinzufügen</button>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label danger">Alle Daten löschen</label>
+          <button class="btn-danger" id="resetBtn">Zurücksetzen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">
+      Created with Perplexity Computer
+    </a>
+  </footer>
+
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
